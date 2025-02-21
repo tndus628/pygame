@@ -34,10 +34,12 @@ clock = pygame.time.Clock()
 #1. 사용자 게임 초기화(배경화면, 게임 이미지, 좌표, 속도, 폰트 등) 
 
 #배경 이미지 불러오기
-background = pygame.image.load("C:/Users/USER/Desktop/sy/coding/파이썬/pygame/pygame_basic/background.png")
+background = pygame.image.load("C:/Users/USER/Desktop/sy/coding/파이썬/pygame/pygame_basic/back.jpg")
+background = pygame.transform.smoothscale(background,(640,640))
 
 #캐릭터(스프라이트) 불러오기
-character = pygame.image.load("C:/Users/USER/Desktop/sy/coding/파이썬/pygame/pygame_basic/character.png")
+character = pygame.image.load("C:/Users/USER/Desktop/sy/coding/파이썬/pygame/pygame_basic/dog.png")
+character = pygame.transform.smoothscale(character,(70,70))
 character_size = character.get_rect().size #이미지의 크기를 구해옴
 character_width = character_size[0] #캐릭터의 가로 크기
 character_height = character_size[1] #캐릭터의 세로 크기
@@ -51,7 +53,8 @@ to_enemy_y = 0
 character_speed = 0.6
  
 #적 enemy 캐릭터
-enemy = pygame.image.load("C:/Users/USER/Desktop/sy/coding/파이썬/pygame/pygame_basic/enemy.png")
+enemy = pygame.image.load("C:/Users/USER/Desktop/sy/coding/파이썬/pygame/pygame_basic/ddong.png")
+enemy = pygame.transform.smoothscale(enemy,(70,70))
 enemy_size = enemy.get_rect().size #이미지의 크기를 구해옴
 enemy_width = enemy_size[0] 
 enemy_height = enemy_size[1] 
@@ -125,7 +128,7 @@ while running:
     screen.blit(enemy, (enemy_x_pos, enemy_y_pos)) 
 
     elapsed_time = (pygame.time.get_ticks() - start_time) / 1000
-    timer = game_font.render(str(int(total_time-elapsed_time)),True,(255,255,255))
+    timer = game_font.render(str(int(total_time-elapsed_time)),True,(0,0,0))
 
     screen.blit(timer,(10,10))
 
