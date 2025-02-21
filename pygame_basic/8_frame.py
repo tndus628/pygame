@@ -113,6 +113,7 @@ while running:
     if character_rect.colliderect(enemy_rect):
         print("충돌했어요")
         running = False
+        
     #screen.fill((0, 0, 255)) #rgb 값으로도 색깔을 나타낼 수 있음
 
     #5. 화면에 그리기

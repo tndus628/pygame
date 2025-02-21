@@ -14,7 +14,7 @@ Quiz) 하늘에서 떨어지는 똥 피하기 게임을 만드시오
 3. 똥: 70 * 70 - enemy.png
 '''
 import pygame
-
+import random
 ###################################################
 #기본 초기화 (반드시 해야하는 것들)
 pygame.init() #초기화(반드시 필요)
@@ -46,17 +46,17 @@ character_y_pos = screen_height - character_height #화면 세로 크기 가장 
 
 #이동할 좌표
 to_x = 0
-
+to_enemy_y = 0
 #이동속도
 character_speed = 0.6
-
+ 
 #적 enemy 캐릭터
 enemy = pygame.image.load("C:/Users/USER/Desktop/sy/coding/파이썬/pygame/pygame_basic/enemy.png")
 enemy_size = enemy.get_rect().size #이미지의 크기를 구해옴
-enemy_width = enemy_size[0] #캐릭터의 가로 크기
-enemy_height = enemy_size[1] #캐릭터의 세로 크기
-enemy_x_pos = (screen_width / 2) - (enemy_width / 2) #화면 가로의 절반 크기에 해당하는 곳에 위치(가로)
-enemy_y_pos = (screen_height / 2) - (enemy_height / 2) #화면 세로 크기 가장 아래에 해당하는 곳에 위치(세로)
+enemy_width = enemy_size[0] 
+enemy_height = enemy_size[1] 
+enemy_x_pos = random.randint(0,screen_width-enemy_width)
+enemy_y_pos = enemy_height -enemy_height
 
 
 
@@ -67,54 +67,54 @@ while running:
 
     #print("fps: " + str(clock.get_fps()))
     
+    to_enemy_y = 10
+
     # 2. 이벤트 처리( 키보드, 마우스 등)
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: #창이 닫히는 이벤트가 발생하였는가?
-            running = False #게임이 진행중이 아님
+        if event.type == pygame.QUIT:
+            running = False
 
-        if event.type == pygame.KEYDOWN: #키가 눌러졌는지 확인
-            if event.key == pygame.K_LEFT: #캐릭터를 왼쪽으로
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
                 to_x -= character_speed
-            elif event.key == pygame.K_RIGHT: #오른쪽으로
+            elif event.key == pygame.K_RIGHT:
                 to_x += character_speed
 
-        if event.type == pygame.KEYUP: #방향키를 떼면 멈춤
+        if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 to_x = 0
-    
+
     #3. 게임 캐릭터 위치 정의
-
     character_x_pos += to_x * dt
+    enemy_y_pos += to_enemy_y 
 
-    #가로 경계값 처리
     if character_x_pos < 0:
         character_x_pos = 0
-    elif character_x_pos > screen_width  - character_width:
-        character_x_pos = screen_width  - character_width
-    
-    #세로 경계값 처리
-    if character_y_pos < 0:
-        character_y_pos = 0
-    elif character_y_pos > screen_height - character_height:
-        character_y_pos = screen_height - character_height
+    elif character_x_pos > screen_width - character_width:
+        character_x_pos = screen_width - character_width
+
+    # 적이 화면 밖으로 벗어나면 새로운 적 생성
+    if enemy_y_pos > screen_height:
+        enemy_y_pos = enemy_height - enemy_height
+        enemy_x_pos = random.randint(0,screen_width-enemy_width)
+
     
     #4. 충돌 처리
-
     character_rect = character.get_rect()
-    character_rect.left = character_x_pos
     character_rect.top = character_y_pos
+    character_rect.left = character_x_pos
 
     enemy_rect = enemy.get_rect()
-    enemy_rect.left = enemy_x_pos
     enemy_rect.top = enemy_y_pos
+    enemy_rect.left = enemy_x_pos  
 
-    #충돌 체크
+    # 충돌 처리시 top과 left만 체크하고 right와 bottom을 체크하지 않아도 모든 방향에서 충돌을 감지할 수 있다.
+
     if character_rect.colliderect(enemy_rect):
         print("충돌했어요")
         running = False
-    #screen.fill((0, 0, 255)) #rgb 값으로도 색깔을 나타낼 수 있음
-
+        
     #5. 화면에 그리기
 
     screen.blit(background, (0,0)) #배경 그리기
@@ -126,7 +126,7 @@ while running:
     pygame.display.update() #게임화면 다시 그리기!
 
 #잠시 대기
-pygame.time.delay(2000) #2초 정도 대기(ms)
+pygame.time.delay(1000) #2초 정도 대기(ms)
 
 #pygame 종료
 pygame.quit()
