@@ -58,7 +58,10 @@ enemy_height = enemy_size[1]
 enemy_x_pos = random.randint(0,screen_width-enemy_width)
 enemy_y_pos = enemy_height -enemy_height
 
+total_time = 10
+start_time = pygame.time.get_ticks()
 
+game_font = pygame.font.Font(None,40)
 
 #이벤트 루프
 running = True #게임이 진행중인가?
@@ -119,9 +122,17 @@ while running:
 
     screen.blit(background, (0,0)) #배경 그리기
     screen.blit(character,(character_x_pos, character_y_pos)) #캐릭터 그리기
-    screen.blit(enemy, (enemy_x_pos, enemy_y_pos)) #적 그리기
+    screen.blit(enemy, (enemy_x_pos, enemy_y_pos)) 
 
-   
+    elapsed_time = (pygame.time.get_ticks() - start_time) / 1000
+    timer = game_font.render(str(int(total_time-elapsed_time)),True,(255,255,255))
+
+    screen.blit(timer,(10,10))
+
+    if total_time - elapsed_time <=0:
+        print("타임아웃")
+        running = False
+
 
     pygame.display.update() #게임화면 다시 그리기!
 
